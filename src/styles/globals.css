@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Load Authentic Retro Pixel Font from public/fonts */
+@font-face {
+  font-family: 'W95FA';
+  src: url('/fonts/W95FA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    image-rendering: pixelated;
+  }
+
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'W95FA', 'MS Sans Serif', Tahoma, sans-serif;
+    background-color: #008080;
+    color: #000000;
+  }
+}
+
+/* 1. Pixelated Rendering Class */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* 2. 1998 Retro Low-Res / High Contrast Photo Filter */
+.photo-1998 {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: contrast(120%) saturate(125%) brightness(96%) sepia(8%);
+}
+
+/* 3. CRT Monitor Subtle Scanlines Effect */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.22) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 6px 100%;
+}
+
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999998;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
+}
+
+/* Custom 3D Bevel Utilities */
+.win-outset {
+  border-top: 1.5px solid #ffffff;
+  border-left: 1.5px solid #ffffff;
+  border-right: 1.5px solid #000000;
+  border-bottom: 1.5px solid #000000;
+  box-shadow: inset 1px 1px 0px #dfdfdf, inset -1px -1px 0px #808080;
+}
+
+.win-inset {
+  border-top: 1.5px solid #808080;
+  border-left: 1.5px solid #808080;
+  border-right: 1.5px solid #ffffff;
+  border-bottom: 1.5px solid #ffffff;
+  box-shadow: inset 1px 1px 0px #000000, inset -1px -1px 0px #dfdfdf;
+}
+
+.win-pressed {
+  border-top: 1.5px solid #000000 !important;
+  border-left: 1.5px solid #000000 !important;
+  border-right: 1.5px solid #ffffff !important;
+  border-bottom: 1.5px solid #ffffff !important;
+  box-shadow: inset 1px 1px 0px #808080, inset -1px -1px 0px #dfdfdf !important;
+}
+
+/* Windows 98 Titlebar Gradients */
+.win-titlebar-active {
+  background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  color: #ffffff;
+}
+
+.win-titlebar-inactive {
+  background: linear-gradient(90deg, #808080 0%, #b5b5b5 100%);
+  color: #c0c0c0;
+}
+
+/* Windows 98 Scrollbars */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background: #dfdfdf;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-top: 1.5px solid #ffffff;
+  border-left: 1.5px solid #ffffff;
+  border-right: 1.5px solid #000000;
+  border-bottom: 1.5px solid #000000;
+  box-shadow: inset 1px 1px 0px #dfdfdf, inset -1px -1px 0px #808080;
+}
+
+::-webkit-scrollbar-button {
+  background: #c0c0c0;
+  width: 16px;
+  height: 16px;
+  border-top: 1.5px solid #ffffff;
+  border-left: 1.5px solid #ffffff;
+  border-right: 1.5px solid #000000;
+  border-bottom: 1.5px solid #000000;
+}

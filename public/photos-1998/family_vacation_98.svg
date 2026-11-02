@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240">
+  <rect width="320" height="240" fill="#70c5e8"/>
+  <!-- Sun & Sky -->
+  <circle cx="270" cy="50" r="30" fill="#ffe066"/>
+  <!-- Mountains -->
+  <polygon points="20,160 110,60 190,160" fill="#5c7a52"/>
+  <polygon points="130,160 220,70 300,160" fill="#4d6645"/>
+  <!-- Lake -->
+  <rect x="0" y="150" width="320" height="90" fill="#3b82a6"/>
+  <!-- Pier & Minivan -->
+  <rect x="40" y="165" width="90" height="40" fill="#a0522d" rx="4"/>
+  <rect x="50" y="170" width="20" height="15" fill="#e0f2fe"/>
+  <rect x="75" y="170" width="25" height="15" fill="#e0f2fe"/>
+  <circle cx="60" cy="205" r="9" fill="#1f2937"/>
+  <circle cx="105" cy="205" r="9" fill="#1f2937"/>
+  <!-- Vintage 1998 Camera Date Stamp in bottom-right corner -->
+  <text x="220" y="225" fill="#ff6600" font-family="'Courier New', monospace" font-size="13" font-weight="bold">'98 07 14</text>
+</svg>
+
