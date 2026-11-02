@@ -8,3 +8,4 @@ export const isTouchOrMobile = () => {
     (navigator && navigator.maxTouchPoints > 0)
   );
 };
+
