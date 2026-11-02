@@ -29,9 +29,24 @@ export const Paint = () => {
   const getCanvasCoords = (e) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
     return {
-      x: Math.round(e.clientX - rect.left),
-      y: Math.round(e.clientY - rect.top),
+      x: Math.round((e.clientX - rect.left) * scaleX),
+      y: Math.round((e.clientY - rect.top) * scaleY),
+    };
+  };
+
+  const getTouchCanvasCoords = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas || !e.touches || e.touches.length === 0) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: Math.round((touch.clientX - rect.left) * scaleX),
+      y: Math.round((touch.clientY - rect.top) * scaleY),
     };
   };
 
@@ -80,6 +95,59 @@ export const Paint = () => {
   };
 
   const handleMouseUp = () => {
+    if (isDrawing) {
+      setIsDrawing(false);
+      setCanvasSnapshot(null);
+    }
+  };
+
+  // Touch Finger Drawing Handlers for Mobile
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    const coords = getTouchCanvasCoords(e);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    setIsDrawing(true);
+    setLineStart(coords);
+    setCanvasSnapshot(ctx.getImageData(0, 0, canvas.width, canvas.height));
+
+    ctx.strokeStyle = tool === 'eraser' ? '#ffffff' : selectedColor;
+    ctx.lineWidth = tool === 'eraser' ? 14 : tool === 'brush' ? 5 : 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    if (tool !== 'line') {
+      ctx.beginPath();
+      ctx.moveTo(coords.x, coords.y);
+      ctx.lineTo(coords.x, coords.y);
+      ctx.stroke();
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const coords = getTouchCanvasCoords(e);
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    if (tool === 'pencil' || tool === 'brush' || tool === 'eraser') {
+      ctx.lineTo(coords.x, coords.y);
+      ctx.stroke();
+    } else if (tool === 'line' && canvasSnapshot) {
+      ctx.putImageData(canvasSnapshot, 0, 0);
+      ctx.strokeStyle = selectedColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(lineStart.x, lineStart.y);
+      ctx.lineTo(coords.x, coords.y);
+      ctx.stroke();
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
     if (isDrawing) {
       setIsDrawing(false);
       setCanvasSnapshot(null);
@@ -168,7 +236,7 @@ export const Paint = () => {
         </div>
 
         {/* Canvas Viewport in Sunken Border */}
-        <div className="flex-1 win-inset bg-[#808080] p-2 overflow-auto flex items-center justify-center">
+        <div className="flex-1 win-inset bg-[#808080] p-1 sm:p-2 overflow-auto flex items-center justify-center">
           <canvas
             ref={canvasRef}
             width={520}
@@ -176,15 +244,19 @@ export const Paint = () => {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
-            className="bg-white shadow-lg cursor-crosshair block"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ touchAction: 'none' }}
+            className="bg-white shadow-lg cursor-crosshair block max-w-full h-auto"
           />
         </div>
       </div>
 
       {/* 3. Bottom 16-Color Palette Box */}
-      <div className="h-10 bg-win-gray border-t border-win-dark flex items-center px-2 space-x-3 shrink-0">
+      <div className="h-auto min-h-[38px] py-1 bg-win-gray border-t border-win-dark flex items-center px-1.5 sm:px-2 space-x-2 sm:space-x-3 shrink-0 overflow-x-auto no-scrollbar">
         {/* Active Color Preview Box */}
-        <div className="w-6 h-6 win-inset bg-white p-0.5 shrink-0" title="Active Drawing Color">
+        <div className="w-5 h-5 sm:w-6 sm:h-6 win-inset bg-white p-0.5 shrink-0" title="Active Drawing Color">
           <div
             style={{ backgroundColor: selectedColor }}
             className="w-full h-full win-outset border border-black/20"
@@ -192,7 +264,7 @@ export const Paint = () => {
         </div>
 
         {/* 16 Colors Grid (2 Rows of 8) */}
-        <div className="grid grid-rows-2 grid-flow-col gap-1">
+        <div className="grid grid-rows-2 grid-flow-col gap-1 shrink-0">
           {PALETTE_16.map((color) => (
             <button
               key={color}
@@ -206,8 +278,8 @@ export const Paint = () => {
           ))}
         </div>
 
-        <div className="text-[11px] text-gray-700 ml-auto">
-          Tool: <b className="uppercase">{tool}</b> | 520 x 340px
+        <div className="text-[10px] sm:text-[11px] text-gray-700 ml-auto shrink-0 pr-1">
+          Tool: <b className="uppercase">{tool}</b>
         </div>
       </div>
 

@@ -28,9 +28,11 @@ export const StartMenu = ({ isOpen, onClose }) => {
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [isOpen, onClose]);
 
@@ -81,6 +83,7 @@ export const StartMenu = ({ isOpen, onClose }) => {
             <div
               className="relative group"
               onMouseEnter={() => setActiveSubmenu('programs')}
+              onClick={() => setActiveSubmenu(activeSubmenu === 'programs' ? null : 'programs')}
             >
               <div className="flex items-center justify-between px-3 py-1.5 hover:bg-win-navy hover:text-white cursor-default">
                 <div className="flex items-center space-x-2.5">
@@ -93,7 +96,7 @@ export const StartMenu = ({ isOpen, onClose }) => {
               {/* Programs Cascading Submenu */}
               {activeSubmenu === 'programs' && (
                 <div
-                  className="absolute left-[99%] top-0 w-52 bg-win-gray win-outset shadow-2xl py-1 z-[10000]"
+                  className="absolute left-28 sm:left-[99%] top-0 w-48 sm:w-52 bg-win-gray win-outset shadow-2xl py-1 z-[10000]"
                   onMouseLeave={() => setActiveSubmenu(null)}
                 >
                   <button
@@ -264,8 +267,8 @@ Welcome to Windows 98 Second Edition Web OS.
 
       {/* Classic Run Modal Dialog */}
       {showRunModal && (
-        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/30 font-w95">
-          <div className="w-80 bg-win-gray win-outset p-2 text-xs">
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/30 font-w95 p-3">
+          <div className="w-[90vw] max-w-[320px] bg-win-gray win-outset p-2 text-xs">
             <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold mb-2">
               <span>Run</span>
               <button
@@ -299,8 +302,8 @@ Welcome to Windows 98 Second Edition Web OS.
 
       {/* Classic Windows 98 Shut Down Modal Dialog */}
       {showShutdownModal && (
-        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/40 font-w95">
-          <div className="w-80 bg-win-gray win-outset p-2 text-xs shadow-2xl">
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/40 font-w95 p-3">
+          <div className="w-[90vw] max-w-[320px] bg-win-gray win-outset p-2 text-xs shadow-2xl">
             <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold mb-2">
               <span>Shut Down Windows</span>
               <button

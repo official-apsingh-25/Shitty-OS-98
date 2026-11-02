@@ -54,12 +54,12 @@ export const Taskbar = ({ startMenuOpen, toggleStartMenu }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 h-[28px] bg-win-gray win-outset z-[9999] flex items-center justify-between px-0.5 select-none font-w95">
       {/* Start Button & Active Window Tabs Container */}
-      <div className="flex items-center space-x-1 h-full py-0.5 flex-1 overflow-hidden pr-2">
+      <div className="flex items-center space-x-1 h-full py-0.5 flex-1 overflow-hidden pr-1 sm:pr-2">
         {/* Classic 3D Start Button */}
         <button
           id="start-button"
           onClick={toggleStartMenu}
-          className={`h-full px-2 flex items-center space-x-1.5 font-bold text-xs ${
+          className={`h-full px-2 flex items-center space-x-1.5 font-bold text-xs shrink-0 ${
             startMenuOpen ? 'win-pressed bg-[#d4d0c8]' : 'win-outset bg-win-gray'
           }`}
         >
@@ -72,10 +72,10 @@ export const Taskbar = ({ startMenuOpen, toggleStartMenu }) => {
         </button>
 
         {/* Vintage Divider Bar */}
-        <div className="w-[2px] h-[80%] border-l border-win-dark border-r border-white my-auto mx-0.5" />
+        <div className="w-[2px] h-[80%] border-l border-win-dark border-r border-white my-auto mx-0.5 shrink-0" />
 
         {/* 3D Tabs for All Open Windows */}
-        <div className="flex items-center space-x-1 h-full flex-1 overflow-x-auto no-scrollbar">
+        <div className="flex items-center space-x-1 h-full flex-1 overflow-x-auto no-scrollbar py-0.5">
           {openWindows.map((win) => {
             const isActive = activeWindowId === win.id && !win.isMinimized;
             return (
@@ -83,7 +83,7 @@ export const Taskbar = ({ startMenuOpen, toggleStartMenu }) => {
                 key={win.id}
                 onClick={() => handleTabClick(win)}
                 title={win.title}
-                className={`h-full min-w-[110px] max-w-[160px] flex items-center space-x-1.5 px-2 text-left text-xs truncate ${
+                className={`h-full min-w-[85px] sm:min-w-[110px] max-w-[150px] shrink-0 flex items-center space-x-1 sm:space-x-1.5 px-1.5 sm:px-2 text-left text-xs truncate ${
                   isActive
                     ? 'win-inset bg-[#d0ccc4] font-bold text-black'
                     : 'win-outset bg-win-gray font-normal text-black'
@@ -96,7 +96,7 @@ export const Taskbar = ({ startMenuOpen, toggleStartMenu }) => {
                     className="w-3.5 h-3.5 shrink-0 pointer-events-none pixelated"
                   />
                 )}
-                <span className="truncate leading-none pt-0.5">{win.title}</span>
+                <span className="truncate leading-none pt-0.5 text-[11px] sm:text-xs">{win.title}</span>
               </button>
             );
           })}
@@ -104,7 +104,7 @@ export const Taskbar = ({ startMenuOpen, toggleStartMenu }) => {
       </div>
 
       {/* Sunken System Tray (Right Side) */}
-      <div className="h-[80%] win-inset px-2 flex items-center space-x-2 bg-win-gray shrink-0 text-xs text-black">
+      <div className="h-[80%] win-inset px-1 sm:px-2 flex items-center space-x-1.5 sm:space-x-2 bg-win-gray shrink-0 text-xs text-black">
         {/* CRT Monitor Effect Quick Toggle */}
         <button
           onClick={toggleCrt}

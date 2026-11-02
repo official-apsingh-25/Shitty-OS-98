@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useOS } from '../../context/OSContext';
+import { isTouchOrMobile } from '../../utils/device';
 
 const DESKTOP_ICONS = [
   { id: 'explorer', title: 'My Computer', icon: '/icons/my-computer.svg' },
@@ -73,14 +74,7 @@ export const Desktop = ({ children, startMenuOpen, closeStartMenu }) => {
     });
   };
 
-  const handleIconClick = (e, idx) => {
-    e.stopPropagation();
-    if (closeStartMenu) closeStartMenu();
-    setSelectedIconIdx(idx);
-  };
-
-  const handleIconDoubleClick = (e, item) => {
-    e.stopPropagation();
+  const handleLaunchItem = (item) => {
     // 4. Fake 99% Stuck Loading Bar for Folders
     if (item.id === 'explorer') {
       const folderName =
@@ -98,6 +92,23 @@ export const Desktop = ({ children, startMenuOpen, closeStartMenu }) => {
     }
   };
 
+  const handleIconClick = (e, item, idx) => {
+    e.stopPropagation();
+    if (closeStartMenu) closeStartMenu();
+    setSelectedIconIdx(idx);
+
+    // Smart Single-Tap on Mobile / Touch screens
+    if (isTouchOrMobile()) {
+      handleLaunchItem(item);
+    }
+  };
+
+  const handleIconDoubleClick = (e, item) => {
+    e.stopPropagation();
+    // Classic Double-Click on Laptop/Desktop
+    handleLaunchItem(item);
+  };
+
   return (
     <div
       ref={desktopRef}
@@ -105,18 +116,18 @@ export const Desktop = ({ children, startMenuOpen, closeStartMenu }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onContextMenu={handleContextMenu}
-      className="desktop-bg relative w-screen h-screen bg-win-teal overflow-hidden select-none font-w95"
+      className="desktop-bg relative w-screen h-screen h-[100dvh] bg-win-teal overflow-hidden select-none font-w95"
     >
-      {/* Vertical Grid of Desktop Icons on Left Side */}
-      <div className="absolute top-3 left-3 bottom-[32px] flex flex-col flex-wrap items-start content-start gap-y-3.5 gap-x-3 pointer-events-none">
+      {/* Desktop Icons: Compact 3-column grid on mobile, classic vertical column wrap on laptop */}
+      <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bottom-[34px] sm:bottom-[32px] right-2 sm:right-auto flex flex-col flex-wrap max-sm:grid max-sm:grid-cols-3 max-sm:auto-rows-max items-start content-start gap-y-2 sm:gap-y-3.5 gap-x-2 sm:gap-x-3 pointer-events-none overflow-y-auto max-sm:max-h-[calc(100dvh-38px)] no-scrollbar">
         {DESKTOP_ICONS.map((item, idx) => {
           const isSelected = selectedIconIdx === idx;
           return (
             <div
               key={`${item.id}-${idx}`}
-              onClick={(e) => handleIconClick(e, idx)}
+              onClick={(e) => handleIconClick(e, item, idx)}
               onDoubleClick={(e) => handleIconDoubleClick(e, item)}
-              className="pointer-events-auto flex flex-col items-center justify-start w-[76px] p-1 cursor-default group"
+              className="pointer-events-auto flex flex-col items-center justify-start w-[72px] sm:w-[76px] p-1 cursor-default group"
             >
               <div className="relative w-8 h-8 flex items-center justify-center mb-1">
                 <img

@@ -94,8 +94,8 @@ export const GandhiViewer = ({ window: win }) => {
       </div>
 
       {/* Sleek 1998 Action Toolbar */}
-      <div className="flex items-center justify-between px-2 py-1 border-b border-white bg-win-gray shrink-0">
-        <div className="flex items-center space-x-1">
+      <div className="flex items-center justify-between px-2 py-1 border-b border-white bg-win-gray shrink-0 gap-1 overflow-x-auto no-scrollbar">
+        <div className="flex items-center space-x-1 shrink-0">
           {/* Zoom In Button */}
           <button
             onClick={handleZoomIn}
@@ -151,7 +151,7 @@ export const GandhiViewer = ({ window: win }) => {
         <button
           onClick={() => closeApp(win.id)}
           title="Close Image Viewer"
-          className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray text-red-900 font-bold"
+          className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray text-red-900 font-bold shrink-0"
         >
           ✕ Close
         </button>

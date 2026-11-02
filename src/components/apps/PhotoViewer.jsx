@@ -109,8 +109,8 @@ export const PhotoViewer = ({ window: win }) => {
       </div>
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-2 py-1 border-b border-white bg-win-gray shrink-0">
-        <div className="flex items-center space-x-1.5">
+      <div className="flex items-center justify-between px-2 py-1 border-b border-white bg-win-gray shrink-0 gap-1 overflow-x-auto no-scrollbar">
+        <div className="flex items-center space-x-1.5 shrink-0">
           <button
             onClick={handlePrev}
             className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray flex items-center space-x-1"
@@ -147,7 +147,7 @@ export const PhotoViewer = ({ window: win }) => {
         </div>
 
         {/* Dial-up Speed readout */}
-        <div className="text-[10px] text-gray-700 font-mono">
+        <div className="text-[10px] text-gray-700 font-mono shrink-0">
           {isDialupLoading ? `Downloading: ${loadProgress}% (V.90 53.3Kbps)` : '100% Loaded'}
         </div>
       </div>

@@ -32,7 +32,7 @@ Try selecting text or typing your own essay.`;
   return (
     <div className="flex-1 flex flex-col bg-win-gray font-w95 text-xs h-full select-none">
       {/* 1. Classic WordPad Menu Bar */}
-      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0">
+      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0 overflow-x-auto no-scrollbar">
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">File</span>
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">Edit</span>
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">View</span>
@@ -41,14 +41,14 @@ Try selecting text or typing your own essay.`;
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">Help</span>
         <button
           onClick={handleSave}
-          className="ml-auto text-[10px] win-outset active:win-pressed px-1.5 py-0.2 bg-win-gray"
+          className="ml-auto text-[10px] win-outset active:win-pressed px-1.5 py-0.2 bg-win-gray shrink-0"
         >
           💾 Save
         </button>
       </div>
 
       {/* 2. Formatting Toolbar */}
-      <div className="flex flex-wrap items-center gap-1.5 p-1 bg-win-gray border-b border-win-dark shrink-0">
+      <div className="flex items-center gap-1.5 p-1 bg-win-gray border-b border-win-dark shrink-0 overflow-x-auto no-scrollbar">
         {/* Font Family Selector */}
         <select
           value={fontFamily}

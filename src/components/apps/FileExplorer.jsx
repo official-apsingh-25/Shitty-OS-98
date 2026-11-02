@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useOS } from '../../context/OSContext';
 import { initialFileSystem, findParentNode } from '../../data/fileSystem';
+import { isTouchOrMobile } from '../../utils/device';
 
 export const FileExplorer = ({ window: win }) => {
   const { openApp, playSound, triggerBsod, openFolderWithFakeLoading } = useOS();
@@ -158,7 +159,7 @@ export const FileExplorer = ({ window: win }) => {
   return (
     <div className="flex-1 flex flex-col bg-win-gray select-none font-w95 text-xs h-full">
       {/* 1. Classic Win98 Menu Bar */}
-      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0">
+      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0 overflow-x-auto no-scrollbar">
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">File</span>
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">Edit</span>
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">View</span>
@@ -166,7 +167,7 @@ export const FileExplorer = ({ window: win }) => {
       </div>
 
       {/* 2. Navigation Toolbar with Back & Up buttons */}
-      <div className="flex items-center space-x-1 px-1.5 py-1 border-b border-white bg-win-gray shrink-0">
+      <div className="flex items-center space-x-1 px-1.5 py-1 border-b border-white bg-win-gray shrink-0 overflow-x-auto no-scrollbar">
         <button
           onClick={handleBack}
           disabled={historyIdx === 0}
@@ -207,8 +208,8 @@ export const FileExplorer = ({ window: win }) => {
 
       {/* 3. Main Explorer Body (Dual Pane / Left Panel + Item Grid) */}
       <div className="flex-1 flex overflow-hidden win-inset bg-white m-1">
-        {/* Left Side Classic Web-View Panel */}
-        <div className="w-36 bg-[#d4d0c8] p-2 border-r border-win-dark flex flex-col justify-between shrink-0 select-none">
+        {/* Left Side Classic Web-View Panel (Responsive: hidden on mobile to give room to files) */}
+        <div className="hidden sm:flex sm:w-36 md:w-40 bg-[#d4d0c8] p-2 border-r border-win-dark flex-col justify-between shrink-0 select-none">
           <div>
             <div className="flex items-center space-x-1.5 mb-2">
               <img src="/icons/folder-open.svg" alt="" className="w-6 h-6 pixelated" />
@@ -216,7 +217,7 @@ export const FileExplorer = ({ window: win }) => {
             </div>
             <div className="border-t border-win-dark my-1" />
             <p className="text-[10px] text-gray-700 leading-normal">
-              Double-click a file or folder to open its contents in Windows 98.
+              Double-click (or tap on mobile) a file or folder to open its contents.
             </p>
             {selectedItemId && (
               <div className="mt-3 text-[10px] text-gray-800 bg-white win-inset p-1.5">
@@ -238,7 +239,7 @@ export const FileExplorer = ({ window: win }) => {
         {/* Right Side Item View Grid */}
         <div
           onClick={() => setSelectedItemId(null)}
-          className="flex-1 p-3 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 content-start overflow-y-auto"
+          className="flex-1 p-2 sm:p-3 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3 content-start overflow-y-auto"
         >
           {childrenItems.length > 0 ? (
             childrenItems.map((item) => {
@@ -251,9 +252,14 @@ export const FileExplorer = ({ window: win }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedItemId(item.id);
+                    // Smart Single-Tap for Mobile
+                    if (isTouchOrMobile()) {
+                      handleItemDoubleClick(item);
+                    }
                   }}
                   onDoubleClick={(e) => {
                     e.stopPropagation();
+                    // Classic Double-Click for Desktop
                     handleItemDoubleClick(item);
                   }}
                   className={`flex flex-col items-center justify-start p-1.5 cursor-default ${
@@ -287,8 +293,8 @@ export const FileExplorer = ({ window: win }) => {
 
       {/* Classic Windows 98 Password Prompt Modal */}
       {passwordTarget && (
-        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/40 font-w95">
-          <div className="w-84 bg-win-gray win-outset p-2 text-xs shadow-2xl">
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/40 font-w95 p-3">
+          <div className="w-[90vw] max-w-[340px] bg-win-gray win-outset p-2 text-xs shadow-2xl">
             <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold mb-2">
               <span>Security Access Required</span>
               <button

@@ -80,7 +80,7 @@ export const InternetExplorer = () => {
   return (
     <div className="flex-1 flex flex-col bg-win-gray font-w95 text-xs h-full select-none">
       {/* 1. Classic IE 4.0 Menu Bar */}
-      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0">
+      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0 overflow-x-auto no-scrollbar">
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">File</span>
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">Edit</span>
         <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">View</span>
@@ -90,8 +90,8 @@ export const InternetExplorer = () => {
       </div>
 
       {/* 2. Navigation Toolbar */}
-      <div className="flex items-center justify-between px-1.5 py-1 border-b border-win-dark bg-win-gray shrink-0">
-        <div className="flex items-center space-x-1">
+      <div className="flex items-center justify-between px-1.5 py-1 border-b border-win-dark bg-win-gray shrink-0 gap-1 overflow-x-auto no-scrollbar">
+        <div className="flex items-center space-x-1 shrink-0">
           {/* Back Button */}
           <button
             onClick={handleBack}
@@ -136,7 +136,7 @@ export const InternetExplorer = () => {
         </div>
 
         {/* Spinning IE Animated Globe Logo */}
-        <div className="w-6 h-6 win-inset bg-black flex items-center justify-center mr-1">
+        <div className="w-6 h-6 win-inset bg-black flex items-center justify-center mr-1 shrink-0">
           <div
             className={`w-4 h-4 rounded-full border-2 border-white/60 border-t-yellow-400 ${
               isLoading ? 'animate-spin' : ''
@@ -148,19 +148,19 @@ export const InternetExplorer = () => {
       {/* 3. Address Bar */}
       <form
         onSubmit={handleUrlSubmit}
-        className="flex items-center px-1.5 py-1 border-b border-white bg-win-gray space-x-2 shrink-0"
+        className="flex items-center px-1.5 py-1 border-b border-white bg-win-gray space-x-1 sm:space-x-2 shrink-0"
       >
-        <span className="text-gray-700 font-bold">Address</span>
-        <div className="flex-1 flex items-center win-inset bg-white px-1.5 py-0.5">
-          <img src="/icons/internet-explorer.svg" alt="" className="w-3.5 h-3.5 mr-1 pixelated" />
+        <span className="text-gray-700 font-bold text-[10px] sm:text-xs">Address</span>
+        <div className="flex-1 min-w-0 flex items-center win-inset bg-white px-1.5 py-0.5">
+          <img src="/icons/internet-explorer.svg" alt="" className="w-3.5 h-3.5 mr-1 pixelated shrink-0" />
           <input
             type="text"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
-            className="flex-1 outline-none font-mono text-xs text-black"
+            className="flex-1 min-w-0 outline-none font-mono text-xs text-black"
           />
         </div>
-        <button type="submit" className="win-outset active:win-pressed px-3 py-0.5 bg-win-gray font-bold">
+        <button type="submit" className="shrink-0 win-outset active:win-pressed px-2 sm:px-3 py-0.5 bg-win-gray font-bold">
           Go
         </button>
       </form>

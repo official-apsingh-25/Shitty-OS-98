@@ -46,7 +46,7 @@ export const Notepad = ({ window: win }) => {
   return (
     <div className="flex-1 flex flex-col bg-win-gray font-w95 text-xs h-full select-none">
       {/* 1. Classic Menu Bar (File Edit Search Help) */}
-      <div className="flex items-center space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0">
+      <div className="flex items-center space-x-2 sm:space-x-3 px-1.5 py-0.5 border-b border-win-dark text-black shrink-0 overflow-x-auto no-scrollbar">
         <div className="relative group">
           <span className="hover:bg-win-navy hover:text-white px-1 cursor-default">File</span>
           <div className="hidden group-hover:block absolute left-0 top-full w-32 bg-win-gray win-outset shadow-2xl py-0.5 z-50">

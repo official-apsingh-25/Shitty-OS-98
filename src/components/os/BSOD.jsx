@@ -9,7 +9,7 @@ export const BSOD = () => {
   return (
     <div
       onClick={dismissBsod}
-      className="fixed inset-0 z-[9999999] bg-[#0000aa] text-white font-mono p-8 select-none flex flex-col items-center justify-center cursor-pointer text-sm leading-relaxed"
+      className="fixed inset-0 z-[9999999] bg-[#0000aa] text-white font-mono p-4 sm:p-8 select-none flex flex-col items-center justify-center cursor-pointer text-xs sm:text-sm leading-relaxed overflow-y-auto"
     >
       <div className="max-w-2xl w-full">
         {/* Header Tag */}

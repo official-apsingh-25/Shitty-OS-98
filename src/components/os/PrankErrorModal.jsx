@@ -42,7 +42,7 @@ export const PrankErrorModal = () => {
       {showPrankModal && (
         <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/20 p-4 font-w95 select-none animate-in fade-in zoom-in-95 duration-75">
           {/* 3D Classic Windows 98 Error Window Frame */}
-          <div className="w-full max-w-[420px] bg-win-gray win-outset shadow-2xl p-1 text-xs">
+          <div className="w-[90vw] max-w-[360px] mx-auto bg-win-gray win-outset shadow-2xl p-1 text-xs">
             {/* Title Bar */}
             <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold select-none mb-2">
               <div className="flex items-center space-x-1.5 overflow-hidden">

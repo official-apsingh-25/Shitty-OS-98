@@ -71,9 +71,9 @@ export const FolderLoadingModal = () => {
   if (!folderLoading?.isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/30 font-w95 select-none p-4">
+    <div className="fixed inset-0 z-[9999999] flex items-center justify-center bg-black/30 font-w95 select-none p-3">
       {/* 3D Classic Windows 98 Dialog Chassis */}
-      <div className="w-full max-w-[390px] bg-win-gray win-outset shadow-2xl p-1 text-xs">
+      <div className="w-[90vw] max-w-[360px] mx-auto bg-win-gray win-outset shadow-2xl p-1 text-xs">
         {/* Title Bar */}
         <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold select-none mb-3">
           <div className="flex items-center space-x-1.5 overflow-hidden">

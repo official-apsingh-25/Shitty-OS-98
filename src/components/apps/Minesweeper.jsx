@@ -22,6 +22,7 @@ export const Minesweeper = () => {
 
   const [grid, setGrid] = useState([]);
   const [gameStatus, setGameStatus] = useState('idle'); // 'idle' | 'playing' | 'won' | 'lost'
+  const [mode, setMode] = useState('dig'); // 'dig' | 'flag' (Mobile Flag Toggle)
   const [isCellPressed, setIsCellPressed] = useState(false);
   const [timer, setTimer] = useState(0);
   const [flagsPlaced, setFlagsPlaced] = useState(0);
@@ -124,10 +125,33 @@ export const Minesweeper = () => {
     }
   };
 
-  // Left click cell handler
+  // Toggle flag on a cell
+  const toggleFlag = (r, c) => {
+    if (gameStatus === 'won' || gameStatus === 'lost') return;
+    const cell = grid[r][c];
+    if (cell.isRevealed) return;
+
+    playSound('click');
+
+    const nextGrid = grid.map((row) => row.map((item) => ({ ...item })));
+    const willBeFlagged = !cell.isFlagged;
+    nextGrid[r][c].isFlagged = willBeFlagged;
+
+    setFlagsPlaced((prev) => (willBeFlagged ? prev + 1 : prev - 1));
+    setGrid(nextGrid);
+  };
+
+  // Left click / tap cell handler
   const handleCellClick = (r, c) => {
     if (gameStatus === 'won' || gameStatus === 'lost') return;
     const cell = grid[r][c];
+
+    // If mobile flag mode is active, toggle flag on tap
+    if (mode === 'flag') {
+      toggleFlag(r, c);
+      return;
+    }
+
     if (cell.isRevealed || cell.isFlagged) return;
 
     playSound('click');
@@ -177,21 +201,10 @@ export const Minesweeper = () => {
     setGrid(nextGrid);
   };
 
-  // Right click flag handler
+  // Right click flag handler (Laptop / Desktop)
   const handleCellRightClick = (e, r, c) => {
     e.preventDefault();
-    if (gameStatus === 'won' || gameStatus === 'lost') return;
-    const cell = grid[r][c];
-    if (cell.isRevealed) return;
-
-    playSound('click');
-
-    const nextGrid = grid.map((row) => row.map((item) => ({ ...item })));
-    const willBeFlagged = !cell.isFlagged;
-    nextGrid[r][c].isFlagged = willBeFlagged;
-
-    setFlagsPlaced((prev) => (willBeFlagged ? prev + 1 : prev - 1));
-    setGrid(nextGrid);
+    toggleFlag(r, c);
   };
 
   // Smiley icon computation
@@ -207,7 +220,7 @@ export const Minesweeper = () => {
   const formattedTimer = String(timer).padStart(3, '0');
 
   return (
-    <div className="flex-1 flex flex-col items-center bg-win-gray p-2 select-none font-w95 text-xs h-full justify-between">
+    <div className="flex-1 flex flex-col items-center bg-win-gray p-2 select-none font-w95 text-xs h-full justify-between overflow-auto">
       {/* 1. Menu Bar */}
       <div className="w-full flex items-center space-x-3 pb-1 border-b border-win-dark text-black text-[11px] shrink-0">
         <span onClick={initializeBoard} className="hover:bg-win-navy hover:text-white px-1 cursor-default">
@@ -218,24 +231,40 @@ export const Minesweeper = () => {
         </span>
       </div>
 
-      {/* 2. Top Sunken Panel: Mine Counter + Smiley + Timer */}
-      <div className="w-full win-inset bg-win-gray p-1.5 flex items-center justify-between mb-2 shrink-0">
+      {/* 2. Top Sunken Panel: Mine Counter + Smiley + Mobile Mode Toggle + Timer */}
+      <div className="w-full win-inset bg-win-gray p-1.5 flex items-center justify-between mb-2 shrink-0 gap-1">
         {/* Left: Red LCD Mine Counter */}
-        <div className="bg-black text-red-600 font-mono font-bold text-lg px-1.5 py-0.5 win-inset tracking-widest leading-none">
+        <div className="bg-black text-red-600 font-mono font-bold text-base sm:text-lg px-1.5 py-0.5 win-inset tracking-widest leading-none">
           {formattedMines}
         </div>
 
-        {/* Center: Classic Smiley Face Reset Button */}
-        <button
-          onClick={initializeBoard}
-          title="Restart Game"
-          className="win-outset active:win-pressed bg-win-gray w-7 h-7 flex items-center justify-center text-base"
-        >
-          {getSmileyFace()}
-        </button>
+        {/* Center: Smiley Face Reset + Mobile Mode Toggle */}
+        <div className="flex items-center space-x-1 sm:space-x-2">
+          <button
+            onClick={initializeBoard}
+            title="Restart Game"
+            className="win-outset active:win-pressed bg-win-gray w-7 h-7 flex items-center justify-center text-base shrink-0"
+          >
+            {getSmileyFace()}
+          </button>
+
+          {/* Mobile Tap Mode Toggle Button: Dig / Flag */}
+          <button
+            onClick={() => {
+              playSound('click');
+              setMode((m) => (m === 'dig' ? 'flag' : 'dig'));
+            }}
+            title="Tap Mode: Dig (⛏️) or Flag (🚩) on Mobile"
+            className={`win-outset active:win-pressed px-1.5 sm:px-2 py-0.5 text-[11px] font-bold flex items-center space-x-1 shrink-0 ${
+              mode === 'flag' ? 'win-pressed bg-red-100 text-red-700' : 'bg-win-gray text-black'
+            }`}
+          >
+            <span>{mode === 'flag' ? '🚩 Flag' : '⛏️ Dig'}</span>
+          </button>
+        </div>
 
         {/* Right: Red LCD Seconds Elapsed Timer */}
-        <div className="bg-black text-red-600 font-mono font-bold text-lg px-1.5 py-0.5 win-inset tracking-widest leading-none">
+        <div className="bg-black text-red-600 font-mono font-bold text-base sm:text-lg px-1.5 py-0.5 win-inset tracking-widest leading-none">
           {formattedTimer}
         </div>
       </div>

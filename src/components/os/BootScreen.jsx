@@ -62,7 +62,7 @@ export const BootScreen = ({ onBootComplete }) => {
       {/* Retro Welcome / Logon Dialog Box */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-[440px] bg-win-gray win-outset shadow-2xl p-2 text-xs"
+        className="w-[92vw] max-w-[440px] bg-win-gray win-outset shadow-2xl p-2 text-xs"
       >
         {/* Title Bar */}
         <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold mb-3 select-none">

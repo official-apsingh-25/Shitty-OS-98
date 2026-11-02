@@ -83,10 +83,10 @@ export const PrankErrorDialog = () => {
   return (
     <div
       data-prank-dialog="true"
-      className="fixed inset-0 z-[9999998] flex items-center justify-center bg-black/20 p-4 font-w95 select-none"
+      className="fixed inset-0 z-[9999998] flex items-center justify-center bg-black/20 p-3 font-w95 select-none"
     >
       {/* 3D Classic Windows 98 Error Window Frame */}
-      <div className="w-full max-w-[420px] bg-win-gray win-outset shadow-2xl p-1 text-xs animate-in fade-in zoom-in-95 duration-100">
+      <div className="w-[90vw] max-w-[360px] mx-auto bg-win-gray win-outset shadow-2xl p-1 text-xs animate-in fade-in zoom-in-95 duration-100">
         {/* Title Bar */}
         <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold select-none mb-2">
           <div className="flex items-center space-x-1.5 overflow-hidden">
@@ -97,6 +97,7 @@ export const PrankErrorDialog = () => {
           {/* Dodging [X] Close Button */}
           <button
             onMouseEnter={handleCloseBtnMouseEnter}
+            onTouchStart={handleCloseBtnMouseEnter}
             onClick={handleInitialClick}
             style={{
               transform: `translate(${closeBtnOffset.x}px, ${closeBtnOffset.y}px)`,
@@ -152,6 +153,7 @@ export const PrankErrorDialog = () => {
               {/* Irritating Dodge OK Button */}
               <button
                 onMouseEnter={handleOkMouseEnter}
+                onTouchStart={handleOkMouseEnter}
                 onClick={handleInitialClick}
                 style={{
                   transform: `translate(${buttonOffset.x}px, ${buttonOffset.y}px)`,

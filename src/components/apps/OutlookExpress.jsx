@@ -104,10 +104,10 @@ export const OutlookExpress = () => {
       </div>
 
       {/* 2. Outlook Express Toolbar */}
-      <div className="flex items-center space-x-1 px-1.5 py-1 border-b border-win-dark bg-win-gray shrink-0">
+      <div className="flex items-center space-x-1 px-1.5 py-1 border-b border-win-dark bg-win-gray shrink-0 overflow-x-auto no-scrollbar">
         <button
           onClick={() => { playSound('click'); setComposeModal(true); }}
-          className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray flex items-center space-x-1 font-bold"
+          className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray flex items-center space-x-1 font-bold shrink-0"
         >
           <span>✉️</span>
           <span>New Mail</span>
@@ -118,13 +118,13 @@ export const OutlookExpress = () => {
             playSound('ding');
             alert('Connected to POP3 server (mail.earthlink-dialup.net)... No new messages on server.');
           }}
-          className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray flex items-center space-x-1"
+          className="win-outset active:win-pressed px-2 py-0.5 bg-win-gray flex items-center space-x-1 shrink-0"
         >
           <span>🔄</span>
           <span>Send/Recv</span>
         </button>
 
-        <div className="w-[1px] h-4 bg-win-dark mx-1" />
+        <div className="w-[1px] h-4 bg-win-dark mx-1 shrink-0" />
 
         <button
           onClick={() => {
@@ -138,7 +138,7 @@ export const OutlookExpress = () => {
             setComposeModal(true);
           }}
           disabled={!activeEmail}
-          className={`win-outset active:win-pressed px-2 py-0.5 bg-win-gray ${
+          className={`win-outset active:win-pressed px-2 py-0.5 bg-win-gray shrink-0 ${
             !activeEmail ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
@@ -157,7 +157,7 @@ export const OutlookExpress = () => {
             setComposeModal(true);
           }}
           disabled={!activeEmail}
-          className={`win-outset active:win-pressed px-2 py-0.5 bg-win-gray ${
+          className={`win-outset active:win-pressed px-2 py-0.5 bg-win-gray shrink-0 ${
             !activeEmail ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
@@ -166,15 +166,15 @@ export const OutlookExpress = () => {
       </div>
 
       {/* 3. Classic 3-Pane Interface */}
-      <div className="flex-1 flex overflow-hidden p-1 space-x-1">
+      <div className="flex-1 flex flex-col sm:flex-row overflow-hidden p-1 space-y-1 sm:space-y-0 sm:space-x-1">
         {/* Left Pane: Folders Tree */}
-        <div className="w-40 win-inset bg-white p-1.5 overflow-y-auto shrink-0 select-none">
-          <div className="font-bold text-[11px] mb-1.5 px-1 flex items-center space-x-1 text-blue-900 border-b border-gray-200 pb-1">
+        <div className="w-full sm:w-40 win-inset bg-white p-1 sm:p-1.5 shrink-0 select-none overflow-x-auto sm:overflow-y-auto max-sm:max-h-20">
+          <div className="hidden sm:flex font-bold text-[11px] mb-1.5 px-1 items-center space-x-1 text-blue-900 border-b border-gray-200 pb-1">
             <img src="/icons/outlook-express.svg" alt="" className="w-4 h-4 pixelated" />
             <span>Outlook Express</span>
           </div>
 
-          <div className="space-y-0.5">
+          <div className="flex sm:flex-col space-x-1 sm:space-x-0 sm:space-y-0.5">
             {folderList.map((folder) => {
               const isActive = currentFolder === folder.id;
               return (
@@ -185,11 +185,13 @@ export const OutlookExpress = () => {
                     setCurrentFolder(folder.id);
                     setSelectedEmailId(emailStore[folder.id]?.[0]?.id || null);
                   }}
-                  className={`w-full text-left px-2 py-1 flex items-center justify-between cursor-default ${
-                    isActive ? 'bg-win-navy text-white font-bold' : 'hover:bg-blue-50 text-black font-normal'
+                  className={`shrink-0 text-left px-2 py-1 flex items-center justify-between cursor-default border sm:border-0 ${
+                    isActive
+                      ? 'bg-win-navy text-white font-bold border-black'
+                      : 'hover:bg-blue-50 text-black font-normal border-gray-200 bg-gray-50 sm:bg-transparent'
                   }`}
                 >
-                  <span className="truncate flex items-center space-x-1.5">
+                  <span className="truncate flex items-center space-x-1.5 mr-1">
                     <span>{folder.icon}</span>
                     <span>{folder.name}</span>
                   </span>
@@ -203,10 +205,10 @@ export const OutlookExpress = () => {
         </div>
 
         {/* Right Split: Top Message Table + Bottom Preview */}
-        <div className="flex-1 flex flex-col overflow-hidden space-y-1">
+        <div className="flex-1 flex flex-col overflow-hidden space-y-1 min-h-0">
           {/* Top-Right Pane: Message List Table */}
-          <div className="h-44 win-inset bg-white overflow-y-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          <div className="h-32 sm:h-44 win-inset bg-white overflow-y-auto overflow-x-auto shrink-0">
+            <table className="min-w-full text-left text-xs border-collapse">
               <thead className="bg-win-gray sticky top-0 border-b border-win-dark select-none">
                 <tr>
                   <th className="p-1 border-r border-win-dark w-6 text-center">!</th>
@@ -305,8 +307,8 @@ export const OutlookExpress = () => {
 
       {/* 5. Compose New Email Dialog */}
       {composeModal && (
-        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/40 font-w95">
-          <div className="w-[480px] bg-win-gray win-outset p-2 text-xs shadow-2xl">
+        <div className="fixed inset-0 z-[100000] flex items-center justify-center bg-black/40 font-w95 p-2">
+          <div className="w-[92vw] sm:w-[480px] max-w-[480px] bg-win-gray win-outset p-2 text-xs shadow-2xl">
             <div className="win-titlebar-active px-2 py-1 flex items-center justify-between text-white font-bold mb-2">
               <span>New Message - Outlook Express</span>
               <button
